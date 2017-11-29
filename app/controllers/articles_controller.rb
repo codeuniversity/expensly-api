@@ -1,6 +1,6 @@
 class ArticlesController < ApplicationController
   before_action :set_article, only: [:show, :update, :destroy]
-
+  before_action :authenticate_user!
   # GET /articles
   def index
     @articles = Article.all
@@ -46,6 +46,6 @@ class ArticlesController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def article_params
-      params.require(:article).permit(:name, :user_id, :catagory_id)
+      params.require(:article).permit(:name, :user_id, :category_id)
     end
 end
