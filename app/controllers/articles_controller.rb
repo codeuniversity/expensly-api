@@ -3,7 +3,11 @@ class ArticlesController < ApplicationController
   before_action :authenticate_user!
   # GET /articles
   def index
-    @articles = Article.all
+    if @category
+      @articles = @category.articles
+    else
+      @articles = Article.all
+    end
 
     render json: @articles
   end
@@ -15,7 +19,11 @@ class ArticlesController < ApplicationController
 
   # POST /articles
   def create
-    @article = Article.new(article_params)
+    if @category
+      @article = @category.articles.new(article_params)
+    else
+      @article = Article.new(article_params)
+    end
 
     if @article.save
       render json: @article, status: :created, location: @article

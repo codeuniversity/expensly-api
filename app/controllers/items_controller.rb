@@ -4,8 +4,11 @@ class ItemsController < ApplicationController
 
   # GET /items
   def index
-    @items = Item.all
-
+    if @transaction
+      @items = @transaction.items
+    else
+      @items = Item.all
+    end
     render json: @items
   end
 
@@ -16,7 +19,11 @@ class ItemsController < ApplicationController
 
   # POST /items
   def create
-    @item = Item.new(item_params)
+    if @transaction
+      @item = @transaction.items.new(item_params)
+    else
+      @item = Item.new(item_params)
+    end
 
     if @item.save
       render json: @item, status: :created, location: @item
