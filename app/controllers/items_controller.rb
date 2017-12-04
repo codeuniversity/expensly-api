@@ -24,7 +24,7 @@ class ItemsController < ApplicationController
     else
       @item = Item.new(item_params)
     end
-
+      @item.user = @current_user
     if @item.save
       render json: @item, status: :created, location: @item
     else
@@ -50,10 +50,12 @@ class ItemsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_item
       @item = Item.find(params[:id])
+      render json: {error: 'not allowed'}, status: 401 unless @item.user == @current_user
+
     end
 
     # Only allow a trusted parameter "white list" through.
     def item_params
-      params.require(:item).permit(:price, :user_id, :transaction_id, :article_id)
+      params.require(:item).permit(:price, :transaction_id, :article_id)
     end
 end

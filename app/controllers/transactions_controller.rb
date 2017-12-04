@@ -17,7 +17,7 @@ class TransactionsController < ApplicationController
   # POST /transactions
   def create
     @transaction = Transaction.new(transaction_params)
-
+    @transaction.user = @current_user
     if @transaction.save
       render json: @transaction, status: :created, location: @transaction
     else
@@ -43,6 +43,7 @@ class TransactionsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_transaction
       @transaction = Transaction.find(params[:id])
+      render json: {error: 'not allowed'}, status: 401 unless @transaction.user == @current_user
     end
 
     # Only allow a trusted parameter "white list" through.
