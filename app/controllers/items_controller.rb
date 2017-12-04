@@ -7,7 +7,7 @@ class ItemsController < ApplicationController
     if @transaction
       @items = @transaction.items
     else
-      @items = Item.all
+      @items = @current_user.items
     end
     render json: @items
   end

@@ -6,7 +6,7 @@ class ArticlesController < ApplicationController
     if @category
       @articles = @category.articles
     else
-      @articles = Article.all
+      @articles = @current_user.articles
     end
 
     render json: @articles
