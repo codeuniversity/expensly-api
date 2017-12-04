@@ -4,8 +4,11 @@ class CategoriesController < ApplicationController
 
   # GET /categories
   def index
-    @categories = @current_user.categories
-
+    if @parent_category
+      @categories = @parent_category.categories
+    else
+      @categories = @current_user.categories
+    end
     render json: @categories
   end
 
@@ -16,8 +19,12 @@ class CategoriesController < ApplicationController
 
   # POST /categories
   def create
-    @category = Category.new(category_params)
-
+    if @parent_category
+      @category = @parent_category.categories.new(category_params)
+    else
+      @category = Category.new(category_params)
+    end
+    @category.user = @current_user
     if @category.save
       render json: @category, status: :created, location: @category
     else
@@ -43,10 +50,11 @@ class CategoriesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_category
       @category = Category.find(params[:id])
+      render json: {error: 'not allowed'}, status: 401 unless @category.user == @current_user
     end
 
     # Only allow a trusted parameter "white list" through.
     def category_params
-      params.require(:category).permit(:name, :user_id, :catagory_id)
+      params.require(:category).permit(:name, :catagory_id)
     end
 end

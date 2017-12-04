@@ -24,7 +24,7 @@ class ArticlesController < ApplicationController
     else
       @article = Article.new(article_params)
     end
-
+    @article.user = @current_user
     if @article.save
       render json: @article, status: :created, location: @article
     else
@@ -50,6 +50,7 @@ class ArticlesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_article
       @article = Article.find(params[:id])
+      render json: {error: 'not allowed'}, status: 401 unless @article.user == @current_user
     end
 
     # Only allow a trusted parameter "white list" through.
