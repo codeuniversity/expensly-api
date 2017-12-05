@@ -1,5 +1,5 @@
 class ItemSerializer < ActiveModel::Serializer
-  attributes :id, :price, :name, :category_name
+  attributes :id, :price, :name, :category_name, :amount
 
   def name
     object.article.name
