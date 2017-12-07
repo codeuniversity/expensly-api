@@ -42,6 +42,7 @@ ActiveRecord::Schema.define(version: 20171129130243) do
     t.uuid "user_id"
     t.uuid "transaction_id"
     t.uuid "article_id"
+    t.integer "amount", default: 1
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["article_id"], name: "index_items_on_article_id"
