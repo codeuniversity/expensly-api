@@ -1,6 +1,6 @@
 class TransactionsController < ApplicationController
-  before_action :set_transaction, only: [:show, :update, :destroy]
   before_action :authenticate_user!
+  before_action :set_transaction, only: [:show, :update, :destroy]
 
   # GET /transactions
   def index
@@ -48,6 +48,6 @@ class TransactionsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def transaction_params
-      params.require(:transaction).permit(:name, :user_id)
+      params.require(:transaction).permit(:name)
     end
 end
