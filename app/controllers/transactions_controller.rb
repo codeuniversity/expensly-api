@@ -4,7 +4,11 @@ class TransactionsController < ApplicationController
 
   # GET /transactions
   def index
-    @transactions = @current_user.transactions.joins(:items).select('transactions.*, sum(items.amount * items.price) as cost, count(items.*) as item_count').group('transactions.id')
+    @transactions = @current_user.transactions
+      .joins(:items)
+      .select('transactions.*, sum(items.amount * items.price) as cost, count(items.*) as item_count')
+      .group('transactions.id')
+      .order(created_at: :desc)
 
     render json: @transactions
   end
