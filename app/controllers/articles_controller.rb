@@ -25,6 +25,8 @@ class ArticlesController < ApplicationController
       @article = Article.new(article_params)
     end
     @article.user = @current_user
+    known_article = Article.find_by(name: @article.name)
+    render json: known_article and return if known_article != nil
     if @article.save
       render json: @article, status: :created, location: @article
     else

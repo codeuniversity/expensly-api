@@ -25,6 +25,10 @@ class CategoriesController < ApplicationController
       @category = Category.new(category_params)
     end
     @category.user = @current_user
+    known_category = Category.find_by(name: @category.name)
+
+    render json: known_category and return if known_category != nil
+
     if @category.save
       render json: @category, status: :created, location: @category
     else
