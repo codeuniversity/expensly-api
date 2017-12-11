@@ -9,6 +9,9 @@ class ItemsController < ApplicationController
     else
       @items = @current_user.items
     end
+    @items = @items.select('items.*, items.amount * items.price as cost')
+      .joins(:article => :category)
+      .order('categories.name ASC, cost DESC' )
     render json: @items
   end
 
