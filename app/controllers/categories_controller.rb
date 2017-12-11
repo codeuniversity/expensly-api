@@ -1,6 +1,6 @@
 class CategoriesController < ApplicationController
-  before_action :set_category, only: [:show, :update, :destroy]
   before_action :authenticate_user!
+  before_action :set_category, only: [:show, :update, :destroy]
 
   # GET /categories
   def index
@@ -9,6 +9,12 @@ class CategoriesController < ApplicationController
     else
       @categories = @current_user.categories
     end
+    @categories = @categories
+      .joins(:articles => :items)
+      .select('categories.*, sum(items.amount * items.price) as cost, count(articles.*) as article_count')
+      .group('categories.id')
+      .order('article_count DESC')
+
     render json: @categories
   end
 

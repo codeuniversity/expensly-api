@@ -1,11 +1,12 @@
 class ItemsController < ApplicationController
-  before_action :set_item, only: [:show, :update, :destroy]
   before_action :authenticate_user!
+  before_action :set_item, only: [:show, :update, :destroy]
+
 
   # GET /items
   def index
-    if @transaction
-      @items = @transaction.items
+    if @container
+      @items = @container.items
     else
       @items = @current_user.items
     end
@@ -22,8 +23,8 @@ class ItemsController < ApplicationController
 
   # POST /items
   def create
-    if @transaction
-      @item = @transaction.items.new(item_params)
+    if @container
+      @item = @container.items.new(item_params)
     else
       @item = Item.new(item_params)
     end

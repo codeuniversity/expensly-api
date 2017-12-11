@@ -5,5 +5,6 @@ class Categories::ArticlesController < ArticlesController
 
   def set_category
     @category = Category.find(params[:category_id])
+    render json: {error: 'not allowed'}, status: 401 unless @category.user == @current_user
   end
 end

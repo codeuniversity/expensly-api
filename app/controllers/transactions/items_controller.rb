@@ -4,7 +4,7 @@ class Transactions::ItemsController < ItemsController
 	private
 
 	def set_transaction
-		@transaction = Transaction.find(params[:transaction_id])
-		render json: {error: 'not allowed'}, status: 401 unless @transaction.user == @current_user
+		@container = Transaction.find(params[:transaction_id])
+		render json: {error: 'not allowed'}, status: 401 unless @container.user == @current_user
 	end
 end

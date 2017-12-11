@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
-  resources :articles
+  resources :articles do
+    resources :items, module: "articles", only: [:index, :create]
+  end
   resources :categories do
     resources :articles, module: "categories", only: [:index, :create]
   end

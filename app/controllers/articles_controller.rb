@@ -1,6 +1,7 @@
 class ArticlesController < ApplicationController
-  before_action :set_article, only: [:show, :update, :destroy]
   before_action :authenticate_user!
+  before_action :set_article, only: [:show, :update, :destroy]
+
   # GET /articles
   def index
     if @category
@@ -8,6 +9,11 @@ class ArticlesController < ApplicationController
     else
       @articles = @current_user.articles
     end
+    @articles = @articles
+      .joins(:items)
+      .select('articles.*, sum(items.amount * items.price) as cost, count(items.*) as item_count')
+      .group('articles.id')
+      .order(created_at: :desc)
 
     render json: @articles
   end
