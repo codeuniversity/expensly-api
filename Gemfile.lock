@@ -44,6 +44,7 @@ GEM
       minitest (~> 5.1)
       tzinfo (~> 1.1)
     arel (8.0.0)
+    awesome_print (1.8.0)
     bcrypt (3.1.11)
     builder (3.2.3)
     byebug (9.1.0)
@@ -176,6 +177,7 @@ PLATFORMS
 
 DEPENDENCIES
   active_model_serializers
+  awesome_print
   byebug
   devise_token_auth
   dotenv-rails
