@@ -1,6 +1,7 @@
 module Intents
   class AddExpense < IntentHandler
     def handle(slots, session_attributes={})
+    def handle(current_user, slots, session_attributes={})
      @article = slots['article']['value']
       @amount = slots['amount']['value']
       slot_info = {article: @article, amount: @amount}
