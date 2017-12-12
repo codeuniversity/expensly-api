@@ -5,7 +5,6 @@ module Intents
       info = session_attributes.merge(slot_info.compact).compact.symbolize_keys
       transaction_name = info[:transaction_name]
       items = info[:items]&.map(&:symbolize_keys) || []
-      byebug
       return ask("You need to add items first, for example by saying: 'I bought a car for 200 euros'",{}) if items.length == 0
 
       return ask("Please provide a transaction name, for example by saying: 'Save Transaction groceries'", info) if !transaction_name

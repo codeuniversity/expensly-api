@@ -2,7 +2,6 @@ class AlexaController < ApplicationController
   before_action :authenticate
   def index
     body = JSON.parse(request.body.read)
-    ap body
     req = body['request']
     if req['type'] == "LaunchRequest"
       launch_request and return
@@ -14,7 +13,6 @@ class AlexaController < ApplicationController
       @session_attributes = body['session']['attributes'] || {}
       @handler = handler_klass.new
       answer = @handler.handle(@current_user, @intent_slots, @session_attributes)
-      ap answer
       render json: answer
 
     end
@@ -49,7 +47,6 @@ class AlexaController < ApplicationController
     body = JSON.parse(request.body.read)
     session =  body['session']
     app_id = session['application']['applicationId']
-    # byebug
     render json: {error: "not allowed"}, status: 401 unless app_id == ENV.fetch('ALEXA_APP_ID')
     device_id = body['context']['System']['device']['deviceId']
     @current_user = User.find_by(device_id: device_id)
