@@ -10,34 +10,23 @@ module Intents
       return ask("Please provide a transaction name, for example by saying: 'Save Transaction groceries'", info) if !transaction_name
 
       Transaction.transaction do
-        t = Transaction.new(user: current_user, name: transaction_name)
+        t = Transaction.create(user: current_user, name: transaction_name)
         t.save!
         items.each do |item_info|
           a = get_article_for(item_info[:article], current_user)
-          c = a.category
-          if a.id != nil
+          if a != nil
           item = Item.new(user: current_user, article: a, price: item_info[:amount], change: t)
             item.save!
+          elsif item_info[:category]
+            c = get_category_for(item_info[:category], current_user) || Category.create(name: item_info[:category], user: current_user)
+            a = Article.create(category: c, name: item_info[:article], user: current_user)
+            item = Item.create(user: current_user, article: a, price: item_info[:amount], change: t)
           else
-            #TODO: ask for category
-            raise ActiveRecord::Rollback, answer("I dont know a fitting category")
+            raise ActiveRecord::Rollback, answer("I dont know what to do here, please investigate")
           end
         end
         return answer("I saved #{transaction_name}")
       end
-
-
     end
-
-    private
-
-    def get_article_for(name, current_user)
-      current_user.articles.where('LOWER(name) LIKE LOWER(?)', "%#{name}%").first || Article.new(user: current_user, name: name)
-    end
-
-    def get_category_for(name, current_user)
-      current_user.articles.where('LOWER(name) LIKE LOWER(?)', "%#{name}%").first || Category.new(user: current_user, name: name)
-    end
-
   end
 end

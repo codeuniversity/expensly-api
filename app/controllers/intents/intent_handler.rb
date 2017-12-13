@@ -26,6 +26,15 @@ module Intents
         }
       }.to_json
     end
+
+    def get_article_for(name, current_user)
+      current_user.articles.where('LOWER(name) LIKE LOWER(?)', "%#{name}%").first
+    end
+
+    def get_category_for(name, current_user)
+      current_user.articles.where('LOWER(name) LIKE LOWER(?)', "%#{name}%").first
+    end
+
   end
 end
 
